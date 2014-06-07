@@ -26,10 +26,10 @@ public class TimeListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        setListAdapter(new TimeZoneAdapter(activity));
+        setListAdapter(new TimeListAdapter(activity));
     }
 
-    private static class TimeZoneAdapter extends BaseAdapter {
+    private static class TimeListAdapter extends BaseAdapter {
 
         private static final TimeZone[] TIME_ZONES = {
                 TimeZone.getTimeZone("Australia/Sydney"),
@@ -43,7 +43,7 @@ public class TimeListFragment extends ListFragment {
         private final DateFormat mDateFormat;
         private final DateFormat mTimeFormat;
 
-        public TimeZoneAdapter(Context context) {
+        public TimeListAdapter(Context context) {
             mContext = context;
             mDateFormat = android.text.format.DateFormat.getLongDateFormat(mContext);
             mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);
@@ -79,7 +79,7 @@ public class TimeListFragment extends ListFragment {
                 holder = (ViewHolder) view.getTag();
             }
             TimeZone timeZone = getItem(position);
-            holder.timeZone.setText(timeZone.getDisplayName());
+            holder.timeZone.setText(TimeZoneInterpreter.from(mContext).getSimpleName(timeZone.getID()));
             mDateFormat.setTimeZone(timeZone);
             mTimeFormat.setTimeZone(timeZone);
             Date now = new Date();
